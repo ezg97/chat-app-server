@@ -1,6 +1,7 @@
 //  --- requirements ---
 require('dotenv').config();
 const express = require('express');
+const authRoutes = require('./routes/auth-routes');
 const morgan = require('morgan');
 const cors = require('cors');
 const helmet = require('helmet');
@@ -13,10 +14,12 @@ const morganOption = (NODE_ENV === 'production')
   ? 'tiny'
   : 'common';
 
-app.use(morgan(morganOption))
-app.use(helmet())
-app.use(cors())
+app.use(morgan(morganOption));
+app.use(helmet());
+app.use(cors());
 
+
+app.use('/auth', authRoutes);
 
 //  --- endpoints ---
 app.get('/', (req, res) => {
