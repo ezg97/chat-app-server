@@ -14,30 +14,41 @@ const passport = require('passport');
 //  --- middleware ---
 const app = express();
 
-// Add headers
-app.use(function (req, res, next) {
 
-  // Website you wish to allow to connect
-  res.setHeader('Access-Control-Allow-Origin', '*');
+//makes sure the cookie is just a day long
+app.use(cookieSession({
+  maxAge: 24*60*60*1000,
+  keys: [keys.session.cookieKey]
+}));
 
-  // Request methods you wish to allow
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+//init passport
+app.use(passport.initialize());
+app.use(passport.session());
+// // Add headers
+// app.use(function (req, res, next) {
 
-  // Request headers you wish to allow
-  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+//   // Website you wish to allow to connect
+//   res.setHeader('Access-Control-Allow-Origin', '*');
 
-  // Set to true if you need the website to include cookies in the requests sent
-  // to the API (e.g. in case you use sessions)
-  res.setHeader('Access-Control-Allow-Credentials', true);
+//   // Request methods you wish to allow
+//   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
 
-  // Pass to next layer of middleware
-  next();
-});
+//   // Request headers you wish to allow
+//   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+
+//   // Set to true if you need the website to include cookies in the requests sent
+//   // to the API (e.g. in case you use sessions)
+//   res.setHeader('Access-Control-Allow-Credentials', true);
+
+//   // Pass to next layer of middleware
+//   next();
+// });
 
 // app.options(function(req, res, next) {
 //   res.header("Access-Control-Allow-Origin", "*");
 //   next();
 // });
+app.options('*', cors())// located here fixed this: "OPTIONS / HTTP/1.1" 204 0 
 
 const morganOption = (NODE_ENV === 'production')
   ? 'tiny'
@@ -56,22 +67,16 @@ app.use(cors());
 // });
 
 
-//makes sure the cookie is just a day long
-app.use(cookieSession({
-  maxAge: 24*60*60*1000,
-  keys: [keys.session.cookieKey]
-}));
 
-//init passport
-app.use(passport.initialize());
-app.use(passport.session());
 
 app.use('/auth', authRoutes);
 
 //  --- endpoints ---
-app.get('/', (req, res) => {
-    console.log("GET /");
-    res.send('Hello, world!')
+app.get('/', (req, res,next) => {
+  console.log("GETzzzz /");
+  let response = { mail: { message: 'got it' }}
+
+  res.send(JSON.stringify('HELLO WORLD!!!'))
 });
 
 app.use((error, req, res, next) => {
