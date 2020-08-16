@@ -1,7 +1,10 @@
 //  --- requirements ---
 require('dotenv').config();
 const express = require('express');
+
 const authRoutes = require('./routes/auth-routes');
+const userRoutes = require('./routes/user-routes');
+
 const morgan = require('morgan');
 const cors = require('cors');
 const helmet = require('helmet');
@@ -15,20 +18,12 @@ const passport = require('passport');
 const app = express();
 
 
-//makes sure the cookie is just a day long
-app.use(cookieSession({
-  maxAge: 24*60*60*1000,
-  keys: [keys.session.cookieKey]
-}));
 
-//init passport
-app.use(passport.initialize());
-app.use(passport.session());
-// // Add headers
-// app.use(function (req, res, next) {
+// Add headers
+// app.options(function (req, res, next) {
 
 //   // Website you wish to allow to connect
-//   res.setHeader('Access-Control-Allow-Origin', '*');
+//   res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
 
 //   // Request methods you wish to allow
 //   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
@@ -48,7 +43,7 @@ app.use(passport.session());
 //   res.header("Access-Control-Allow-Origin", "*");
 //   next();
 // });
-app.options('*', cors())// located here fixed this: "OPTIONS / HTTP/1.1" 204 0 
+// app.options('http://localhost:3000', cors())// located here fixed this: "OPTIONS / HTTP/1.1" 204 0 
 
 const morganOption = (NODE_ENV === 'production')
   ? 'tiny'
@@ -56,9 +51,46 @@ const morganOption = (NODE_ENV === 'production')
 
 app.use(morgan(morganOption));
 app.use(helmet());
-app.use(cors());
+//app.use(cors());
+app.use(cors({
+  origin : 'http://localhost:3000',//localhost:3000 (Whatever your frontend url is) 
+  credentials: true, // <= Accept credentials (cookies) sent by the client
+}));
 
 
+
+
+// app.options(function (req, res, next) {
+
+//   // Website you wish to allow to connect
+//   res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+
+//   // Request methods you wish to allow
+//   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+
+//   // Request headers you wish to allow
+//   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+
+//   // Set to true if you need the website to include cookies in the requests sent
+//   // to the API (e.g. in case you use sessions)
+//   res.setHeader('Access-Control-Allow-Credentials', true);
+
+//   // Pass to next layer of middleware
+//   next();
+// });
+
+//makes sure the cookie is just a day long
+app.use(cookieSession({
+  maxAge: 24*60*60*1000,
+  keys: [keys.session.cookieKey]
+}));
+
+//init passport
+app.use(passport.initialize());
+app.use(passport.session());
+
+
+// res.header("Access-Control-Allow-Origin", "http://localhost:3000");
 
 
 // app.use((req, res, next) => {
@@ -66,10 +98,20 @@ app.use(cors());
 //   next();
 // });
 
+// app.all('*',  (req, res, next) => {
+//   res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
 
+
+//   res.header("Access-Control-Allow-Origin", "*");
+// res.header("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With");
+// res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
+// next();
+// });
 
 
 app.use('/auth', authRoutes);
+console.log('going to user');
+app.use('/user', userRoutes);
 
 //  --- endpoints ---
 app.get('/', (req, res,next) => {
