@@ -40,6 +40,14 @@ const UserService = {
             .returning('*')
             .then(userLinks => userLinks);
     },
+    getUsersFromLinks(db, userArray) {
+        return db('users')
+            .where((builder) =>
+                builder.whereIn('id', userArray)
+            )
+            .then(users => users)
+
+    },
     // --------------------------------------------------
     //          Below might be deleted later or moved to a different file
     //---------------------------------------------------
