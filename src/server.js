@@ -19,6 +19,7 @@ const server = app.listen(PORT, () => {
 
 const io = socket(server);
 const users = [];
+const activeUsers = [];
 
 // LISTENING: for first connection.
 io.on('connection', socket => {
@@ -29,8 +30,18 @@ io.on('connection', socket => {
   socket.on('addUser', (userID) => {
       // There can be multiple elements in the array with the same id, but different sockets that way the user can chat with multiple tabs open
       users.push({id: userID, userSocket: socket});
+      if (!activeUsers.includes(userID)) {
+        console.log('add to active users');
+        console.log('id', userID);
+        activeUsers.push(userID);
+        console.log('new active: ',activeUsers);
+        io.sockets.emit('activeUsers',activeUsers);
+      }
+
+
       console.log('USER ADDED');
       console.log({users});
+
   });
   console.log('3');
 
@@ -57,16 +68,18 @@ io.on('connection', socket => {
         let socketRooms = obj.userSocket.rooms;
 
         console.log('hulu checking: ');console.log('rooms: ',socketRooms[info.room]);console.log('id: ', obj.userSocket.id);
-
-        // Add the requested user to the room only if it hasn't been added already
+        console.log('false room',socketRooms['alsfj']);
+        // Add the requestor and requested user to the room only if it hasn't been added already
         if (!socketRooms[info.room]) {
           //The socket is added to a room only once
           socket.join(info.room);
           console.log('joined');
+          //force Add the requested user
           obj.userSocket.join(info.room);
           console.log('CONNECTION MADE');console.log(obj.userSocket.id);
-          // Emit back to client that the connection was made.
+          // Emit back to BOTH clients that the connection was made.
           socket.emit('connectionMade', info.room, obj.userSocket.id);
+          obj.userSocket.emit('connectionMade', info.room, obj.userSocket.id);
         }
 
         // Add the user who sent this request in to the room (must be an extra tab from the original)
@@ -89,12 +102,13 @@ io.on('connection', socket => {
 
   //LISTENING: for message from client to disperse to other users
   socket.on('message', (info) => {
-    console.log('received message: ',info.msg);
+    console.log('received message: ',info);
     let message = info.msg;
+    let user = info.user;
     //io.sockets.emit('message',message)
     console.log('room for message', info.room)
 
-    socket.to(info.room).emit('message',message)
+    socket.to(info.room).emit('message',{message, user})
     // socket.broadcast.emit('message',message);
   })
 
@@ -110,14 +124,14 @@ io.on('connection', socket => {
 
   //LISTENING: for disconnection from client to disperse to other users
   socket.on('disconnect',() => {
-    io.emit('user disconnected');
     //Remove this user from the array if they have disconnected
     console.log({users});
-    console.log(users[users.length-1]);
-    console.log(users[users.length-1].userSocket.id);
+    let id;
+    //remove object from users list, grab user ID
     users.find((obj, i) => {
       if (obj.userSocket.id === socket.id) {
-        console.log('deleting user,',obj.userSocket.id);
+        console.log('deleting user,',obj.userSocket.id, obj.id);
+        id = obj.id;
         users.splice(i,1);
         console.log({users});
         console.log('index:',i,'length:',users.length);
@@ -125,7 +139,25 @@ io.on('connection', socket => {
       }
     });
     console.log('disconnected');
-    console.log({users})
+    console.log({users});
+
+    //If the user's id is still in the "users" array, then whether on a different tab or device, the user is still logged in and won't be removed from activeUsers list
+    let userExists = false;
+    users.find((obj, i) => {
+      if (obj.id === id) {
+        userExists = true;
+        return true;
+      }
+    });
+
+    // If the user that disconnected is not signed in on a different tab/device, then remove from active user list
+    if (!userExists) {
+      console.log('dont exist nowhere delete');
+      activeUsers.splice(activeUsers.indexOf(id), 1);
+    }
+      console.log('active users: ', activeUsers);
+
+    io.sockets.emit('user disconnected',activeUsers);
   });
 
 });
