@@ -2,6 +2,8 @@ require('dotenv').config();
 
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20');
+const GithubStrategy = require('passport-github2');
+
 const keys = require('./keys');
 const UserService = require('./passport-setup-service');
 const knex = require('knex');
@@ -67,6 +69,53 @@ passport.use(
                 // Add user to database
                 UserService.addUser(db, user).then(newUser => {
                     console.log('New User Created:' + newUser);
+                    //Call the callback function
+                    done(null,newUser);
+                });
+                
+            }
+        })
+        //if exists, retrieve info
+
+    
+    })
+);
+
+passport.use(
+    new GithubStrategy({
+        //options for the google strategy
+        callbackURL: '/auth/rgh/redirect',
+        clientID: keys.github.clientID,
+        clientSecret: keys.github.clientSecret,
+        scope: ['user:email'],
+    }, (accessToken, refreshToken, profile, done) => {
+        //passport call back function
+        
+        //check if user exists in database
+        UserService.hasUserWithUserId(db, profile.id).then(currentUser => {
+            //If the user is in the database then pass them into the callback function
+            console.log('githubbbbbb');
+            if (currentUser) {
+                console.log('USING USER');
+                done(null, currentUser);
+            }
+            else {
+                console.log('CREATING USER');
+                console.log(profile);
+                //Initialize the user object with the profile and email info
+                const user = { 
+                    user_name: profile.displayName,
+                    user_id: profile.id,
+                    user_thumbnail: profile.photos[0].value,
+                    user_email: profile.emails[0].value
+                }
+                
+                // Add user to database
+                UserService.addUser(db, user).then(newUser => {
+                    console.log('New User Created:' + newUser);
+                    console.log(Object.values(newUser));
+                    console.log('New User Created:' + {newUser});
+
                     //Call the callback function
                     done(null,newUser);
                 });

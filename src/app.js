@@ -4,6 +4,7 @@ const express = require('express');
 
 const authRoutes = require('./routes/auth-routes');
 const userRoutes = require('./routes/user-routes');
+const localRoutes = require('./routes/local-auth-routes');
 
 const morgan = require('morgan');
 const cors = require('cors');
@@ -16,6 +17,7 @@ const passport = require('passport');
 
 //  --- middleware ---
 const app = express();
+var bodyParser = require('body-parser')
 
 
 
@@ -58,7 +60,9 @@ app.use(cors({
 }));
 
 
-
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 
 // app.options(function (req, res, next) {
 
@@ -107,8 +111,9 @@ app.use(passport.session());
 // res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
 // next();
 // });
-
-
+//console.log('local');
+//app.use('/local', localRoutes);
+console.log('auth');
 app.use('/auth', authRoutes);
 console.log('going to user');
 app.use('/user', userRoutes);

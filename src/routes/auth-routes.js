@@ -1,5 +1,9 @@
 const router = require('express').Router();
 const passport = require('passport');
+const express = require('express');
+
+const jsonParser = express.json();
+
 
 //custom middleware for authentication, this will redirect the user because the login process is handled from the server
 const authCheckLogin = (req, res, next) => {
@@ -73,11 +77,50 @@ router.get('/login/google', (req, res, next) => {
     //  return res.redirect(302, '/home');
 });
 
+router.get('/login/github', (req, res, next) => {
+    // console.log('redirecting to auth/google');
+    // res.status(200);
+    // res.send(JSON.stringify('googleLogin'));
+     res.redirect(302, '/auth/logout');
+     //  res.redirect(302,'/home');
+     //   res.sendStatus(302);
+     //  return res.redirect(302, '/home');
+ });
+
 // auth login with google
+// passport.authenticate('something') is middle ware or a returns a function (see passport-setup or passport-setup-local)
 router.get('/google', passport.authenticate('google', {
     //this tells us what info we want from the user
     scope: ['profile', 'email']
 }));
+
+router.get('/github', passport.authenticate('github', {
+    //this tells us what info we want from the user
+    scope: ['profile', 'user:email']
+}));
+
+// router.post('/signin', (req, res, next) => {
+//     console.log('in sign in');
+//     //console.log(req);
+//     console.log(req.body);
+//     console.log(req.params);
+//     //app.set('body', req.body);
+
+//     res.redirect(302, '/auth/local')
+
+// })
+
+// router.post('/local', passport.authenticate('local'), (req,res) => {
+//     console.log('LOCAL CUSTOM REDIRECT');
+//     console.log('passport user', req.user);
+//     if(req.user){
+//         res.send(req.user);
+//     }
+//     else{
+//         console.log('failed, no req.user');
+//         res.send({});
+//     }
+// });
 
 
 //callback route for google to redirect to
@@ -88,6 +131,14 @@ router.get('/rggl/redirect', passport.authenticate('google'), (req,res) => {
     // res.send(req.user);
     res.redirect(302, '/auth/profile');
 });
+
+router.get('/rgh/redirect', passport.authenticate('github'), (req,res) => {
+    // console.log('error or nah?');
+   //  console.log('made it to send', req.user);
+     // res.status(200).send('you reached the callback URI');
+     // res.send(req.user);
+     res.redirect(302, '/auth/profile');
+ });
 
 //before the middleware is ran, the cookie will be deserialized.
 //until the database is setup, we'll only have access to the id
