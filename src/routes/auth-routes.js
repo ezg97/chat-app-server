@@ -99,6 +99,16 @@ router.get('/github', passport.authenticate('github', {
     scope: ['profile', 'user:email']
 }));
 
+router.get('/twitch', passport.authenticate('twitch', {
+    //this tells us what info we want from the user
+    scope: ['user_read']
+}));
+
+router.get('/linkedin', passport.authenticate('linkedin', {
+    //this tells us what info we want from the user
+    scope: ['r_liteprofile', 'r_emailaddress']
+}));
+
 // router.post('/signin', (req, res, next) => {
 //     console.log('in sign in');
 //     //console.log(req);
@@ -133,6 +143,22 @@ router.get('/rggl/redirect', passport.authenticate('google'), (req,res) => {
 });
 
 router.get('/rgh/redirect', passport.authenticate('github'), (req,res) => {
+    // console.log('error or nah?');
+   //  console.log('made it to send', req.user);
+     // res.status(200).send('you reached the callback URI');
+     // res.send(req.user);
+     res.redirect(302, '/auth/profile');
+ });
+
+ router.get('/twitch/redirect', passport.authenticate('twitch'), (req,res) => {
+    // console.log('error or nah?');
+   //  console.log('made it to send', req.user);
+     // res.status(200).send('you reached the callback URI');
+     // res.send(req.user);
+     res.redirect(302, '/auth/profile');
+ });
+
+ router.get('/linkedin/redirect', passport.authenticate('linkedin'), (req,res) => {
     // console.log('error or nah?');
    //  console.log('made it to send', req.user);
      // res.status(200).send('you reached the callback URI');
