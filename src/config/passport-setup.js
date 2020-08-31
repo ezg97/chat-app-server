@@ -18,21 +18,21 @@ const db = knex({
 
 //Serialize the user id
 passport.serializeUser( (user, done) => {
-    console.log('in serialize');
+    //console.log('in serialize');
     done(null, user.user_id);//id in the database
 });
 
 passport.deserializeUser( (id, done) => {
     //find the user id in the database
-    console.log('in DEserialize **');
-    console.log('ID: ', id);
+    //console.log('in DEserialize **');
+    //console.log('ID: ', id);
     //Locating the user in the database
     UserService.hasUserWithUserId(
         db,
         id,
     )
     .then(userInfo => {
-        console.log('returned from service: ', userInfo);
+        //console.log('returned from service: ', userInfo);
         //If the user exists then pass into the callback function, else, pass in empty object
         if(userInfo) done(null, userInfo);
         else done(null,{});
@@ -55,11 +55,11 @@ passport.use(
         UserService.hasUserWithUserId(db, profile.id).then(currentUser => {
             //If the user is in the database then pass them into the callback function
             if (currentUser) {
-                console.log('USING USER');
+                //console.log('USING USER');
                 done(null, currentUser);
             }
             else {
-                console.log('CREATING USER');
+                //console.log('CREATING USER');
                 //Initialize the user object with the profile and email info
                 const user = { 
                     user_name: profile.displayName,
@@ -70,7 +70,7 @@ passport.use(
                 
                 // Add user to database
                 UserService.addUser(db, user).then(newUser => {
-                    console.log('New User Created:' + newUser);
+                    //console.log('New User Created:' + newUser);
                     //Call the callback function
                     done(null,newUser);
                 });
@@ -96,14 +96,14 @@ passport.use(
         //check if user exists in database
         UserService.hasUserWithUserId(db, profile.id).then(currentUser => {
             //If the user is in the database then pass them into the callback function
-            console.log('githubbbbbb');
+            //console.log('githubbbbbb');
             if (currentUser) {
-                console.log('USING USER');
+                //console.log('USING USER');
                 done(null, currentUser);
             }
             else {
-                console.log('CREATING USER');
-                console.log(profile);
+                //console.log('CREATING USER');
+                //console.log(profile);
                 //Initialize the user object with the profile and email info
                 const user = { 
                     user_name: profile.displayName,
@@ -114,9 +114,9 @@ passport.use(
                 
                 // Add user to database
                 UserService.addUser(db, user).then(newUser => {
-                    console.log('New User Created:' + newUser);
-                    console.log(Object.values(newUser));
-                    console.log('New User Created:' + {newUser});
+                    //console.log('New User Created:' + newUser);
+                    //console.log(Object.values(newUser));
+                    //console.log('New User Created:' + {newUser});
 
                     //Call the callback function
                     done(null,newUser);
@@ -134,25 +134,25 @@ passport.use(
 passport.use(
     new TwitchStrategy({
         //options for the google strategy
-        callbackURL: 'http://localhost:8000/auth/twitch/redirect',
+        callbackURL: 'https://protected-taiga-95742.herokuapp.com/auth/twitch/redirect',
         clientID: keys.twitch.clientID,
         clientSecret: keys.twitch.clientSecret,
         // scope: ['user_read'],
     }, (accessToken, refreshToken, profile, done) => {
         //passport call back function
-        console.log('made it to twitchhhh');
-        console.log('user', profile);
+        //console.log('made it to twitchhhh');
+        //console.log('user', profile);
         //check if user exists in database
         UserService.hasUserWithUserId(db, profile.id).then(currentUser => {
             //If the user is in the database then pass them into the callback function
-            console.log('twitcheru');
+            //console.log('twitcheru');
             if (currentUser) {
-                console.log('USING USER');
+                //console.log('USING USER');
                 done(null, currentUser);
             }
             else {
-                console.log('CREATING USER');
-                console.log(profile);
+                //console.log('CREATING USER');
+                //console.log(profile);
                 //Initialize the user object with the profile and email info
                 const user = { 
                     user_name: profile.display_name,
@@ -163,9 +163,9 @@ passport.use(
                 
                 // // Add user to database
                 UserService.addUser(db, user).then(newUser => {
-                    console.log('New User Created:' + newUser);
-                    console.log(Object.values(newUser));
-                    console.log('New User Created:' + {newUser});
+                    //console.log('New User Created:' + newUser);
+                    //console.log(Object.values(newUser));
+                    //console.log('New User Created:' + {newUser});
 
                     //Call the callback function
                     done(null,newUser);
@@ -182,25 +182,25 @@ passport.use(
 passport.use(
     new LinkedInStrategy({
         //options for the google strategy
-        callbackURL: 'http://localhost:8000/auth/linkedin/redirect',
+        callbackURL: 'https://protected-taiga-95742.herokuapp.com/auth/linkedin/redirect',
         clientID: keys.linkedIn.clientID,
         clientSecret: keys.linkedIn.clientSecret,
         scope: ['r_liteprofile', 'r_emailaddress']
         // scope: ['user_read'],
     }, (accessToken, refreshToken, profile, done) => {
         //passport call back function
-        console.log('made it to linkedIn account');
-        console.log('user', profile);
+        //console.log('made it to linkedIn account');
+        //console.log('user', profile);
         //check if user exists in database
         UserService.hasUserWithUserId(db, profile.id).then(currentUser => {
             //If the user is in the database then pass them into the callback function
             if (currentUser) {
-                console.log('USING USER');
+                //console.log('USING USER');
                 done(null, currentUser);
             }
             else {
-                console.log('CREATING USER');
-                console.log(profile);
+                //console.log('CREATING USER');
+                //console.log(profile);
                 //Initialize the user object with the profile and email info
                 const user = { 
                     user_name: profile.displayName,
@@ -211,9 +211,9 @@ passport.use(
                 
                 // // Add user to database
                 UserService.addUser(db, user).then(newUser => {
-                    console.log('New User Created:' + newUser);
-                    console.log(Object.values(newUser));
-                    console.log('New User Created:' + {newUser});
+                    //console.log('New User Created:' + newUser);
+                    //console.log(Object.values(newUser));
+                    //console.log('New User Created:' + {newUser});
 
                     //Call the callback function
                     done(null,newUser);

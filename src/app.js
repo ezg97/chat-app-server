@@ -25,7 +25,7 @@ var bodyParser = require('body-parser')
 // app.options(function (req, res, next) {
 
 //   // Website you wish to allow to connect
-//   res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+//   res.setHeader('Access-Control-Allow-Origin', 'https://www.chat-app.dev');
 
 //   // Request methods you wish to allow
 //   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
@@ -45,7 +45,7 @@ var bodyParser = require('body-parser')
 //   res.header("Access-Control-Allow-Origin", "*");
 //   next();
 // });
-// app.options('http://localhost:3000', cors())// located here fixed this: "OPTIONS / HTTP/1.1" 204 0 
+// app.options('https://www.chat-app.dev', cors())// located here fixed this: "OPTIONS / HTTP/1.1" 204 0 
 
 const morganOption = (NODE_ENV === 'production')
   ? 'tiny'
@@ -55,7 +55,7 @@ app.use(morgan(morganOption));
 app.use(helmet());
 //app.use(cors());
 app.use(cors({
-  origin : 'http://localhost:3000',//localhost:3000 (Whatever your frontend url is) 
+  origin : 'https://www.chat-app.dev',//localhost:3000 (Whatever your frontend url is) 
   credentials: true, // <= Accept credentials (cookies) sent by the client
 }));
 
@@ -67,7 +67,7 @@ app.use(bodyParser.urlencoded({
 // app.options(function (req, res, next) {
 
 //   // Website you wish to allow to connect
-//   res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+//   res.setHeader('Access-Control-Allow-Origin', 'https://www.chat-app.dev');
 
 //   // Request methods you wish to allow
 //   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
@@ -94,7 +94,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 
-// res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+// res.header("Access-Control-Allow-Origin", "https://www.chat-app.dev");
 
 
 // app.use((req, res, next) => {
@@ -103,7 +103,7 @@ app.use(passport.session());
 // });
 
 // app.all('*',  (req, res, next) => {
-//   res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+//   res.setHeader('Access-Control-Allow-Origin', 'https://www.chat-app.dev');
 
 
 //   res.header("Access-Control-Allow-Origin", "*");
@@ -111,16 +111,16 @@ app.use(passport.session());
 // res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
 // next();
 // });
-//console.log('local');
+////console.log('local');
 //app.use('/local', localRoutes);
-console.log('auth');
+//console.log('auth');
 app.use('/auth', authRoutes);
-console.log('going to user');
+//console.log('going to user');
 app.use('/user', userRoutes);
 
 //  --- endpoints ---
 app.get('/', (req, res,next) => {
-  console.log("GETzzzz /");
+  //console.log("GETzzzz /");
   let response = { mail: { message: 'got it' }}
 
   res.send(JSON.stringify('HELLO WORLD!!!'))
