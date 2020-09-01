@@ -19,7 +19,7 @@ const db = knex({
 //Serialize the user id
 passport.serializeUser( (user, done) => {
     console.log('in serialize');
-    done(null, user.user_id);//id in the database
+    done(null, user.user_email;//id in the database
 });
 
 passport.deserializeUser( (id, done) => {
@@ -27,7 +27,7 @@ passport.deserializeUser( (id, done) => {
     console.log('in DEserialize **');
     console.log('ID: ', id);
     //Locating the user in the database
-    UserService.hasUserWithUserId(
+    UserService.hasUserWithEmail(
         db,
         id,
     )
