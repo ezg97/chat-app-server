@@ -192,7 +192,7 @@ passport.use(
         //console.log('made it to linkedIn account');
         console.log('user', profile);
         //check if user exists in database
-        UserService.hasUserWithUserId(db, profile.id).then(currentUser => {
+        UserService.hasUserWithEmail(db, `${profile.photos[0].value}${profile.displayName}`/*profile.id*/).then(currentUser => {
             //If the user is in the database then pass them into the callback function
             if (currentUser) {
                 console.log('USING USER');
@@ -206,7 +206,7 @@ passport.use(
                     user_name: profile.displayName,
                     user_id: profile.id,
                     user_thumbnail: profile.photos[0].value,
-                    user_email: profile.email
+                    user_email: `${profile.photos[0].value}${profile.displayName}`,/*profile.email8/ //combo of thumbnail and name to make unique identifer 
                 }
                 
                 // // Add user to database
