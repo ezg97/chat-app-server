@@ -20,7 +20,7 @@ const app = express();
 var bodyParser = require('body-parser')
 
 
-
+app.set('trust proxy', 1) // trust first proxy
 // Add headers
 // app.options(function (req, res, next) {
 
