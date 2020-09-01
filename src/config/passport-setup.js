@@ -19,7 +19,7 @@ const db = knex({
 //Serialize the user id
 passport.serializeUser( (user, done) => {
     console.log('in serialize');
-    done(null, user.user_email;//id in the database
+    done(null, user.user_email);//id in the database
 });
 
 passport.deserializeUser( (id, done) => {
