@@ -20,7 +20,7 @@ const app = express();
 var bodyParser = require('body-parser')
 
 
-app.set('trust proxy', 1) // trust first proxy
+app.set('trust proxy', 1); // trust first proxy
 // Add headers
 // app.options(function (req, res, next) {
 
@@ -87,7 +87,9 @@ app.use(bodyParser.urlencoded({
 app.use(cookieSession({
   maxAge: 24*60*60*1000,
   keys: [keys.session.cookieKey],
+  sameSite: 'None',
   sameSite: 'none',
+  httpOnly: true,
   secure: true,
 }));
 
