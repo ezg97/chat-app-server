@@ -86,7 +86,9 @@ app.use(bodyParser.urlencoded({
 //makes sure the cookie is just a day long
 app.use(cookieSession({
   maxAge: 24*60*60*1000,
-  keys: [keys.session.cookieKey]
+  keys: [keys.session.cookieKey],
+  secure: false,
+SameSite: 'strict',
 }));
 
 //init passport
