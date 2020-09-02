@@ -115,16 +115,16 @@ app.use(passport.session());
 // res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
 // next();
 // });
-////console.log('local');
+//////console.log('local');
 //app.use('/local', localRoutes);
-//console.log('auth');
+////console.log('auth');
 app.use('/auth', authRoutes);
-//console.log('going to user');
+////console.log('going to user');
 app.use('/user', userRoutes);
 
 //  --- endpoints ---
 app.get('/', (req, res,next) => {
-  //console.log("GETzzzz /");
+  ////console.log("GETzzzz /");
   let response = { mail: { message: 'got it' }}
 
   res.send(JSON.stringify('HELLO WORLD!!!'))

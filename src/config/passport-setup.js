@@ -18,21 +18,21 @@ const db = knex({
 
 //Serialize the user id
 passport.serializeUser( (user, done) => {
-    console.log('in serialize');
+    //console.log('in serialize');
     done(null, user.user_email);//id in the database
 });
 
 passport.deserializeUser( (email, done) => {
     //find the user id in the database
-    console.log('in DEserialize **');
-    console.log('email: ', email);
+    //console.log('in DEserialize **');
+    //console.log('email: ', email);
     //Locating the user in the database
     UserService.hasUserWithEmail(
         db,
         email,
     )
     .then(userInfo => {
-        console.log('returned from service: ', userInfo);
+        //console.log('returned from service: ', userInfo);
         //If the user exists then pass into the callback function, else, pass in empty object
         if(userInfo) done(null, userInfo);
         else done(null,{});
@@ -55,24 +55,26 @@ passport.use(
         UserService.hasUserWithEmail(db, profile._json.email).then(currentUser => {
             //If the user is in the database then pass them into the callback function
             if (currentUser) {
-                console.log('USING USER');
+                //console.log('USING USER');
                 
                 //compare the ID that the user in the database has with the ID
                 return UserService.compareIds(profile.id, currentUser.user_id)
                     .then(compareMatch => {
                         //if the password doesn't match
-                        if (compareMatch) {
+                        //if (compareMatch) {
                             //Call the callback function
+                            //no if, because if they matched I could send the below, but if they dont match then I would need to grab every account with this email
+                            // and check each password... doable, but i'm not gonna do that right now!
                             done(null, currentUser);
-                        }
-                        else {
-                            done(null, {});
-                         }
+                       // }
+                      //  else {
+                        //    done(null, {});
+                      //   }
                 });
             }
             else {
-                console.log('CREATING USER');
-                console.log(profile);
+                //console.log('CREATING USER');
+                //console.log(profile);
 
                     
                 UserService.hashId(profile.id)
@@ -102,7 +104,7 @@ passport.use(
 passport.use(
     new GithubStrategy({
         //options for the google strategy
-        callbackURL: '/auth/rgh/redirect',
+        callbackURL: 'https://protected-taiga-95742.herokuapp.com/auth/rgh/redirect',
         clientID: keys.github.clientID,
         clientSecret: keys.github.clientSecret,
         scope: ['user:email'],
@@ -111,24 +113,24 @@ passport.use(
         UserService.hasUserWithEmail(db, profile.email).then(currentUser => {
             //If the user is in the database then pass them into the callback function
             if (currentUser) {
-                console.log('USING USER');
+                //console.log('USING USER');
                 
                 //compare the ID that the user in the database has with the ID
                 return UserService.compareIds(profile.id, currentUser.user_id)
                     .then(compareMatch => {
                         //if the password doesn't match
-                        if (compareMatch) {
+                       // if (compareMatch) {
                             //Call the callback function
                             done(null, currentUser);
-                        }
-                        else {
-                            done(null, {});
-                         }
+                        // }
+                        // else {
+                        //     done(null, {});
+                        //  }
                 });
             }
             else {
-                console.log('CREATING USER');
-                console.log(profile);
+                //console.log('CREATING USER');
+                //console.log(profile);
 
                     
                 UserService.hashId(profile.id)
@@ -165,30 +167,30 @@ passport.use(
         // scope: ['user_read'],
     }, (accessToken, refreshToken, profile, done) => {
         //passport call back function
-        //console.log('made it to twitchhhh');
-        console.log('user', profile);
+        ////console.log('made it to twitchhhh');
+        //console.log('user', profile);
         //check if user exists in database
         UserService.hasUserWithEmail(db, profile.email).then(currentUser => {
             //If the user is in the database then pass them into the callback function
             if (currentUser) {
-                console.log('USING USER');
+                //console.log('USING USER');
                 
                 //compare the ID that the user in the database has with the ID
                 return UserService.compareIds(profile.id, currentUser.user_id)
                     .then(compareMatch => {
                         //if the password doesn't match
-                        if (compareMatch) {
+                       // if (compareMatch) {
                             //Call the callback function
                             done(null, currentUser);
-                        }
-                        else {
-                            done(null, {});
-                         }
+                        // }
+                        // else {
+                        //     done(null, {});
+                        //  }
                 });
             }
             else {
-                console.log('CREATING USER');
-                console.log(profile);
+                //console.log('CREATING USER');
+                //console.log(profile);
 
                     
                 UserService.hashId(profile.id)
@@ -225,32 +227,32 @@ passport.use(
         // scope: ['user_read'],
     }, (accessToken, refreshToken, profile, done) => {
         //passport call back function
-        //console.log('made it to linkedIn account');
-        console.log('user', profile);
+        ////console.log('made it to linkedIn account');
+        //console.log('user', profile);
         //check if user exists in database
         /*profile.id*/
         let email = (profile.displayName + profile.photos[0].value);
         UserService.hasUserWithEmail(db, email).then(currentUser => {
             //If the user is in the database then pass them into the callback function
             if (currentUser) {
-                console.log('USING USER');
+                //console.log('USING USER');
                 
                 //compare the ID that the user in the database has with the ID
                 return UserService.compareIds(profile.id, currentUser.user_id)
                     .then(compareMatch => {
                         //if the password doesn't match
-                        if (compareMatch) {
+                       // if (compareMatch) {
                             //Call the callback function
                             done(null, currentUser);
-                        }
-                        else {
-                            done(null, {});
-                         }
+                        // }
+                        // else {
+                        //     done(null, {});
+                        //  }
                 });
             }
             else {
-                console.log('CREATING USER');
-                console.log(profile);
+                //console.log('CREATING USER');
+                //console.log(profile);
 
                     
                 UserService.hashId(profile.id)

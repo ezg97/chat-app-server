@@ -6,7 +6,7 @@ const jsonParser = express.json();
 
 const UserService = require('./user-service');
 
-//console.log('in the userRoutes');
+////console.log('in the userRoutes');
 // localhost:8000/users
 
 //  /LINKS/:DATA   ->   GET
@@ -14,27 +14,27 @@ router
     .route('/links/:data')
         // GET
         .get((req,res,next) => {
-            //console.log('in links router');
-            //console.log(req.params);
+            ////console.log('in links router');
+            ////console.log(req.params);
             //grabbing the database and storing in a variable to pass to service object
             const knexInstance = req.app.get('db');
             //grab user id from the parameters of the url passed from client
 
             const userId = req.params.data;
 
-            //console.log({userId});
+            ////console.log({userId});
             if (userId == undefined) {
-                //console.log('not defined');
+                ////console.log('not defined');
                 res.send({});
             }
             
             if(userId.length > 0) {
                 UserService.getUsersLinks(knexInstance, userId)
                     .then(links => {
-                        //console.log('returned from service request');
+                        ////console.log('returned from service request');
                         //serizlize and THEN return to user
                         const linkArray = links.map(({toid}) => toid)
-                        //console.log({linkArray});
+                        ////console.log({linkArray});
                         res.send(JSON.stringify(linkArray))
                 });
             }
@@ -51,28 +51,28 @@ router
 .route('/search/:data')
     // GET
     .get((req,res,next) => {
-        //console.log('in search router');
-        //console.log(req.params);
+        ////console.log('in search router');
+        ////console.log(req.params);
         //grabbing the database and storing in a variable to pass to service object
         const knexInstance = req.app.get('db');
         //grab user id from the parameters of the url passed from client
 
         const userName = req.params.data;
 
-        //console.log({userName});
+        ////console.log({userName});
         if (userName == undefined) {
-            //console.log('not defined');
+            ////console.log('not defined');
             res.send({});
         }
         
         if(userName.length > 0) {
             UserService.getSuggestedUsers(knexInstance, userName)
                 .then(users => {
-                    //console.log('returned from service request');
+                    ////console.log('returned from service request');
                     //serizlize and THEN return to user
                     const userArray = users.map(({user_name}) => user_name);
 
-                    //console.log({userArray});
+                    ////console.log({userArray});
                     res.send(JSON.stringify(userArray))
             });
         }
@@ -84,30 +84,30 @@ router
 .route('/searched/:data')
     // GET
     .get((req,res,next) => {
-        //console.log('in searchED router');
-        //console.log(req.params);
+        ////console.log('in searchED router');
+        ////console.log(req.params);
         //grabbing the database and storing in a variable to pass to service object
         const knexInstance = req.app.get('db');
         //grab user id from the parameters of the url passed from client
 
         const userName = req.params.data;
 
-        //console.log({userName});
+        ////console.log({userName});
         if (userName == undefined) {
-            //console.log('not defined');
+            ////console.log('not defined');
             res.send({});
         }
         
         if(userName.length > 0) {
             UserService.getSearchedUsers(knexInstance, userName)
                 .then(user => {
-                    //console.log('returned from service request');
+                    ////console.log('returned from service request');
                     //serizlize and THEN return to user
                     //cleaning up info from server, don't want to send any private info of users to the client side
                     const userArray = user.map(({user_name,id,user_thumbnail}) => {
                         return {user_name,id,user_thumbnail}
                     });
-                    //console.log({userArray});
+                    ////console.log({userArray});
                     res.send(JSON.stringify(userArray))
             });
         }
@@ -118,26 +118,26 @@ router
 .route('/addLink')
     // POST
     .post(jsonParser, (req,res,next) => {
-        //console.log('in links router');
-        //console.log(req.body); //object sent via body
+        ////console.log('in links router');
+        ////console.log(req.body); //object sent via body
         //grabbing the database and storing in a variable to pass to service object
         const knexInstance = req.app.get('db');
         //grab user id from the parameters of the url passed from client
 
         const linkObj = req.body;
 
-        //console.log({linkObj});
+        ////console.log({linkObj});
         if (linkObj == undefined) {
-            //console.log('not defined');
+            ////console.log('not defined');
             res.send({});
         }
         
         if(Object.keys(linkObj).length > 1) {
             UserService.addLink(knexInstance, linkObj)
                 .then(links => {
-                    //console.log('returned from service request');
+                    ////console.log('returned from service request');
                     //serizlize and THEN return to user
-                    //console.log({links});
+                    ////console.log({links});
                     res.send(JSON.stringify(links))
             });
         }
@@ -148,26 +148,26 @@ router
 .route('/deleteLink')
     // DELETE
     .delete(jsonParser, (req,res,next) => {
-        //console.log('in DELETE router');
-        //console.log(req.body); //object sent via body
+        ////console.log('in DELETE router');
+        ////console.log(req.body); //object sent via body
         //grabbing the database and storing in a variable to pass to service object
         const knexInstance = req.app.get('db');
         //grab user id from the parameters of the url passed from client
 
         const linkObj = req.body;
 
-        //console.log({linkObj});
+        ////console.log({linkObj});
         if (linkObj == undefined) {
-            //console.log('not defined');
+            ////console.log('not defined');
             res.send({});
         }
         
         if(Object.keys(linkObj).length > 1) {
             UserService.deleteLink(knexInstance, linkObj.fromid, linkObj.toid)
                 .then(links => {
-                    //console.log('returned from service request');
+                    ////console.log('returned from service request');
                     //serizlize and THEN return to user
-                    //console.log({links});
+                    ////console.log({links});
                     res.send(JSON.stringify(links))
             });
         }
@@ -178,8 +178,8 @@ router
 //   /ALLLINKS   ->   POST
 .route('/allLinks')
     .post(jsonParser, (req,res,next) => {
-        //console.log('in links router');
-        //console.log(req.body); //object sent via body
+        ////console.log('in links router');
+        ////console.log(req.body); //object sent via body
         //grabbing the database and storing in a variable to pass to service object
         const knexInstance = req.app.get('db');
         //grab user id from the parameters of the url passed from client
@@ -188,15 +188,15 @@ router
         const linkArray = req.body;
 
         if (linkArray == undefined) {
-            //console.log('not defined');
+            ////console.log('not defined');
             res.send({});
         }
         if(linkArray.length > 0) {
             UserService.getUsersFromLinks(knexInstance, linkArray)
                 .then(links => {
-                    //console.log('returned from get all links service request');
+                    ////console.log('returned from get all links service request');
                     //serizlize and THEN return to user
-                    //console.log({links});
+                    ////console.log({links});
                     res.send(JSON.stringify(links))
             });
         }
