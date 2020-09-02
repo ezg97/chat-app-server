@@ -58,7 +58,7 @@ passport.use(
                 console.log('USING USER');
                 
                 //compare the ID that the user in the database has with the ID
-                return UserService.compareIds(profile.id, current.user_id)
+                return UserService.compareIds(profile.id, currentUser.user_id)
                     .then(compareMatch => {
                         //if the password doesn't match
                         if (compareMatch) {
@@ -114,7 +114,7 @@ passport.use(
                 console.log('USING USER');
                 
                 //compare the ID that the user in the database has with the ID
-                return UserService.compareIds(profile.id, current.user_id)
+                return UserService.compareIds(profile.id, currentUser.user_id)
                     .then(compareMatch => {
                         //if the password doesn't match
                         if (compareMatch) {
@@ -174,7 +174,7 @@ passport.use(
                 console.log('USING USER');
                 
                 //compare the ID that the user in the database has with the ID
-                return UserService.compareIds(profile.id, current.user_id)
+                return UserService.compareIds(profile.id, currentUser.user_id)
                     .then(compareMatch => {
                         //if the password doesn't match
                         if (compareMatch) {
@@ -236,7 +236,7 @@ passport.use(
                 console.log('USING USER');
                 
                 //compare the ID that the user in the database has with the ID
-                return UserService.compareIds(profile.id, current.user_id)
+                return UserService.compareIds(profile.id, currentUser.user_id)
                     .then(compareMatch => {
                         //if the password doesn't match
                         if (compareMatch) {
