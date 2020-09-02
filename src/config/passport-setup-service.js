@@ -44,8 +44,8 @@ const UserService = {
     hashId(id) {
         return bcrypt.hash(id, 12)
     },
-    comparePasswords(password, hash) {
-      return bcrypt.compare(password, hash)
+    compareIds(id, hash) {
+      return bcrypt.compare(id, hash)
     },
     serializeUser(user) {
         return {
