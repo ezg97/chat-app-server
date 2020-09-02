@@ -193,38 +193,47 @@ passport.use(
         console.log('user', profile);
         //check if user exists in database
         /*profile.id*/
-        let email = (profile.displayName);
+        let email = (profile.displayName + profile.photos[0].value);
         UserService.hasUserWithEmail(db, email).then(currentUser => {
             //If the user is in the database then pass them into the callback function
             if (currentUser) {
                 console.log('USING USER');
-                done(null, currentUser);
+                
+                //compare the ID that the user in the database has with the ID
+                return UserService.comparePasswords(profile.id, current.user_id)
+                    .then(compareMatch => {
+                        //if the password doesn't match
+                        if (compareMatch) {
+                            //Call the callback function
+                            done(null, currentUser);
+                        }
+                        else {
+                            done(null, {});
+                         }
+                });
             }
             else {
                 console.log('CREATING USER');
                 console.log(profile);
-                //Initialize the user object with the profile and email info
-                const user = { 
-                    user_name: profile.displayName,
-                    user_id: profile.id,
-                    user_thumbnail: profile.photos[0].value,
-                    user_email: email,/*profile.email*/ //combo of thumbnail and name to make unique identifer 
-                }
-                
-                // // Add user to database
-                UserService.addUser(db, user).then(newUser => {
-                    console.log('New User Created:' + newUser);
-                    console.log(Object.values(newUser));
-                    console.log('New User Created:' + {newUser});
 
-                    //Call the callback function
-                    done(null,newUser);
+                    
+                UserService.hashId(profile.id)
+                    .then(hashedId => {
+                        const user = { 
+                            user_name: profile.displayName,
+                            user_id: hashedId,
+                            user_thumbnail: profile.photos[0].value,
+                            user_email: email,/*profile.email*/ //combo of thumbnail and name to make unique identifer 
+                        }
+                                    
+                                    // // Add user to database
+                        UserService.addUser(db, user).then(newUser => {                
+                            //Call the callback function
+                             done(null,newUser);
+                        });
                 });
-                
             }
-        })
-        //if exists, retrieve info
-
-    
+        });
+        //if exists, retrieve info    
     })
 )

@@ -41,8 +41,11 @@ const UserService = {
         }
         return null
     },
-    hashPassword(password) {
-        return bcrypt.hash(password, 12)
+    hashId(id) {
+        return bcrypt.hash(id, 12)
+    },
+    comparePasswords(password, hash) {
+      return bcrypt.compare(password, hash)
     },
     serializeUser(user) {
         return {
