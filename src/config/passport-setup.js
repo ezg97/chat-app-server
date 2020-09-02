@@ -110,7 +110,7 @@ passport.use(
         scope: ['user:email'],
     }, (accessToken, refreshToken, profile, done) => {
         //passport call back function
-        UserService.hasUserWithEmail(db, profile.email).then(currentUser => {
+        UserService.hasUserWithEmail(db, profile.emails[0].value).then(currentUser => {
             //If the user is in the database then pass them into the callback function
             if (currentUser) {
                 //console.log('USING USER');
@@ -140,7 +140,7 @@ passport.use(
                             user_name: profile.displayName,
                             user_id: hashedId,
                             user_thumbnail: profile.photos[0].value,
-                            user_email: profile.emails[0].value
+                            user_email: profile.emails[0].value,
                         }
                                                     
                          // Add user to database
