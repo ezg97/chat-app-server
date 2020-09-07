@@ -231,7 +231,7 @@ passport.use(
         //console.log('user', profile);
         //check if user exists in database
         /*profile.id*/
-        let email = (profile.displayName + profile.photos[0].value? profile.photos[0].value :'');
+        let email = (profile.photos[0].value );
         UserService.hasUserWithEmail(db, email).then(currentUser => {
             //If the user is in the database then pass them into the callback function
             if (currentUser) {
