@@ -231,7 +231,7 @@ passport.use(
         //console.log('user', profile);
         //check if user exists in database
         /*profile.id*/
-        let email = (profile.displayName + profile.photos[0].value);
+        let email = (profile.displayName + profile.photos[0].value? profile.photos[0].value :'');
         UserService.hasUserWithEmail(db, email).then(currentUser => {
             //If the user is in the database then pass them into the callback function
             if (currentUser) {
@@ -260,7 +260,7 @@ passport.use(
                         const user = { 
                             user_name: profile.displayName,
                             user_id: hashedId,
-                            user_thumbnail: profile.photos[0].value,
+                            user_thumbnail: profile.photos[0].value? profile.photos[0].value : 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQM4gDr3fKXOKTqlgkSem0XERN2riUGUc2icw&usqp=CAU',
                             user_email: email,/*profile.email*/ //combo of thumbnail and name to make unique identifer 
                         }
                                     
