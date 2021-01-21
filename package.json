@@ -37,7 +37,7 @@
     "passport-twitch": "^1.0.3",
     "passport-twitchtv": "^0.1.4",
     "pg": "^7.18.2",
-    "socket.io": "^2.3.0",
+    "socket.io": "^2.4.0",
     "xss": "^1.0.8"
   },
   "devDependencies": {
