@@ -6,11 +6,12 @@ module.exports = {
   "connectionString": (process.env.NODE_ENV === 'test')
     ? process.env.TEST_DATABASE_URL
     : process.env.DATABASE_URL,
-  ssl: true,
+  ssl: {
     // SSL: !!process.env.SSL,
-  rejectUnauthorized: false,
-  dialect: "postgres",
-  dialectOptions: {
-    ssl: true
-  },
+    rejectUnauthorized: false
+  }
+  // dialect: "postgres",
+  // dialectOptions: {
+  //   ssl: true
+  // },
 };
