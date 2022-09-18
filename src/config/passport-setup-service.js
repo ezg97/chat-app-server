@@ -10,21 +10,27 @@ const UserService = {
             .from('users')
             .where('user_id', user_id)
             .first()
-            .then(user => user)
+            .then(user => user).catch((error) => {
+              console.log('Error - pss-HUWUI: ', error);
+          });
     },
     hasUserWithEmail(db, email) {
       return db
           .from('users')
           .where('user_email', email)
           .first()
-          .then(user => user)
+          .then(user => user).catch((error) => {
+            console.log('Error - pss-HUWE: ', error);
+        });
   },
     addUser(db, newUser) {
         return db
           .insert(newUser)
           .into('users')
           .returning('*')
-          .then(([user]) => user)
+          .then(([user]) => user).catch((error) => {
+            console.log('Error - pss-AU: ', error);
+        });
     },
     validatePassword(password) {
         if (password.length < 8) {

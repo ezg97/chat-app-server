@@ -36,6 +36,8 @@ router
                         const linkArray = links.map(({toid}) => toid)
                         ////console.log({linkArray});
                         res.send(JSON.stringify(linkArray))
+                }).catch((error) => {
+                    console.log('Error - ur-GUL: ', error);
                 });
             }
         });
@@ -74,6 +76,8 @@ router
 
                     ////console.log({userArray});
                     res.send(JSON.stringify(userArray))
+            }).catch((error) => {
+                console.log('Error - ur-GSU: ', error);
             });
         }
     });
@@ -109,6 +113,8 @@ router
                     });
                     ////console.log({userArray});
                     res.send(JSON.stringify(userArray))
+            }).catch((error) => {
+                console.log('Error - ur-GSU2: ', error);
             });
         }
     });
@@ -139,6 +145,8 @@ router
                     //serizlize and THEN return to user
                     ////console.log({links});
                     res.send(JSON.stringify(links))
+            }).catch((error) => {
+                console.log('Error - ur-AL: ', error);
             });
         }
     });
@@ -169,6 +177,8 @@ router
                     //serizlize and THEN return to user
                     ////console.log({links});
                     res.send(JSON.stringify(links))
+            }).catch((error) => {
+                console.log('Error - ur-DL: ', error);
             });
         }
     });
@@ -198,6 +208,8 @@ router
                     //serizlize and THEN return to user
                     ////console.log({links});
                     res.send(JSON.stringify(links))
+            }).catch((error) => {
+                console.log('Error - ur-GUFL: ', error);
             });
         }
     });

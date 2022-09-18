@@ -70,6 +70,8 @@ passport.use(
                       //  else {
                         //    done(null, {});
                       //   }
+                }).catch((error) => {
+                    console.log('Error - ps-Google-CI: ', error);
                 });
             }
             else {
@@ -91,9 +93,15 @@ passport.use(
                         UserService.addUser(db, user).then(newUser => {                
                             //Call the callback function
                              done(null,newUser);
+                        }).catch((error) => {
+                            console.log('Error - ps-Google-AU: ', error);
                         });
+                }).catch((error) => {
+                    console.log('Error - ps-Google-HI: ', error);
                 });
             }
+        }).catch((error) => {
+            console.log('Error - ps-Google-HUWE: ', error);
         });
         //if exists, retrieve info
 
@@ -126,6 +134,8 @@ passport.use(
                         // else {
                         //     done(null, {});
                         //  }
+                }).catch((error) => {
+                    console.log('Error - ps-GitHub-CI: ', error);
                 });
             }
             else {
@@ -147,9 +157,15 @@ passport.use(
                         UserService.addUser(db, user).then(newUser => {                
                             //Call the callback function
                              done(null,newUser);
+                        }).catch((error) => {
+                            console.log('Error - ps-GitHub-AU: ', error);
                         });
+                }).catch((error) => {
+                    console.log('Error - ps-GitHub-HI: ', error);
                 });
             }
+        }).catch((error) => {
+            console.log('Error - ps-GitHub-HUWE: ', error);
         });
         //if exists, retrieve info
 
@@ -186,6 +202,8 @@ passport.use(
                         // else {
                         //     done(null, {});
                         //  }
+                }).catch((error) => {
+                    console.log('Error - ps-Twitch-CI: ', error);
                 });
             }
             else {
@@ -206,9 +224,15 @@ passport.use(
                         UserService.addUser(db, user).then(newUser => {                
                             //Call the callback function
                              done(null,newUser);
+                        }).catch((error) => {
+                            console.log('Error - ps-Twitch-HI: ', error);
                         });
+                }).catch((error) => {
+                    console.log('Error - ps-Twitch-HI: ', error);
                 });
             }
+        }).catch((error) => {
+            console.log('Error - ps-Twitch-HUWE: ', error);
         });
        
         //if exists, retrieve info
@@ -248,6 +272,8 @@ passport.use(
                         // else {
                         //     done(null, {});
                         //  }
+                }).catch((error) => {
+                    console.log('Error - ps-LinkedIn-CI: ', error);
                 });
             }
             else {
@@ -268,9 +294,15 @@ passport.use(
                         UserService.addUser(db, user).then(newUser => {                
                             //Call the callback function
                              done(null,newUser);
+                        }).catch((error) => {
+                            console.log('Error - ps-LinkedIn-AU: ', error);
                         });
+                }).catch((error) => {
+                    console.log('Error - ps-LinkedIn-HI: ', error);
                 });
             }
+        }).catch((error) => {
+            console.log('Error - ps-LinkedIn-HUWE: ', error);
         });
         //if exists, retrieve info    
     })
